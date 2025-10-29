@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000,
     host: true,
   },
-  base: "/screen-genie/",
+  base: "/",
 
   build: {
     outDir: "docs",
