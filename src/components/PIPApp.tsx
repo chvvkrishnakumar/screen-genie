@@ -59,15 +59,17 @@ export const PIPApp: React.FC<PIPAppProps> = ({
   // Local state that syncs with main window
   const [localMessages, setLocalMessages] = useState(initialMessages);
   const [localIsThinking, setLocalIsThinking] = useState(initialIsThinking);
-  const [localLoadingStage, setLocalLoadingStage] = useState(initialLoadingStage);
+  const [localLoadingStage, setLocalLoadingStage] =
+    useState(initialLoadingStage);
   // Use shared screen access state from main window (no local state needed)
   const hasScreenAccess = hasMainScreenAccess;
 
   const screenStreamRef = useRef<MediaStream | null>(null);
   const protectionCleanup = useRef<(() => void) | null>(null);
-  
+
   // AI session management
-  const { getOrCreateSession, recreateSession, destroySession } = useAISession();
+  const { getOrCreateSession, recreateSession, destroySession } =
+    useAISession();
 
   // Sync state with main window through callbacks
   useEffect(() => {
@@ -83,19 +85,23 @@ export const PIPApp: React.FC<PIPAppProps> = ({
   }, [initialLoadingStage]);
 
   // Wrapper functions that update both local state and main window
-  const handleAddMessage = (type: Message["type"], content: string, id?: number) => {
+  const handleAddMessage = (
+    type: Message["type"],
+    content: string,
+    id?: number
+  ) => {
     const newMessage: Message = {
       type,
       content,
       timestamp: new Date(),
       id: id || Date.now(),
     };
-    setLocalMessages(prev => [...prev, newMessage]);
+    setLocalMessages((prev) => [...prev, newMessage]);
     onAddMessage(type, content, id);
   };
 
   const handleUpdateMessage = (id: number, content: string) => {
-    setLocalMessages(prev =>
+    setLocalMessages((prev) =>
       prev.map((msg) => (msg.id === id ? { ...msg, content } : msg))
     );
     onUpdateMessage(id, content);
@@ -115,7 +121,8 @@ export const PIPApp: React.FC<PIPAppProps> = ({
     const initialMessage: Message = {
       id: Date.now(),
       type: "system",
-      content: "🎯 AI Screen Assistant is ready! I can help with questions and tasks.",
+      content:
+        "🎯 AI Screen Assistant is ready! I can help with questions and tasks.",
       timestamp: new Date(),
     };
     setLocalMessages([initialMessage]);
@@ -186,7 +193,9 @@ export const PIPApp: React.FC<PIPAppProps> = ({
     const tracks = screenStreamRef.current.getTracks();
     if (tracks.length === 0 || tracks?.[0]?.readyState === "ended") {
       // Stream ended - PIP window cannot request new permissions, need main window to handle this
-      console.log("Screen stream ended in PIP window - screen sharing may need to be restarted from main window");
+      console.log(
+        "Screen stream ended in PIP window - screen sharing may need to be restarted from main window"
+      );
       return null;
     }
 
@@ -258,7 +267,9 @@ export const PIPApp: React.FC<PIPAppProps> = ({
       } = await Tesseract.recognize(imageDataUrl, "eng", {
         logger: (m) => {
           if (m.status === "recognizing text") {
-            handleSetLoadingStage(`🔍 Reading text ${Math.round(m.progress * 100)}%`);
+            handleSetLoadingStage(
+              `🔍 Reading text ${Math.round(m.progress * 100)}%`
+            );
           }
         },
       });
@@ -338,12 +349,16 @@ export const PIPApp: React.FC<PIPAppProps> = ({
     try {
       // Check if Chrome AI APIs are available
       if (typeof window.LanguageModel === "undefined") {
-        throw new Error("Chrome AI not available. Please use Chrome Canary with AI features enabled.");
+        throw new Error(
+          "Chrome AI not available. Please use Chrome Canary with AI features enabled."
+        );
       }
 
       const availability = await window.LanguageModel.availability();
       if (availability !== "available") {
-        throw new Error(`AI Status: ${availability}. Please wait for the model to download.`);
+        throw new Error(
+          `AI Status: ${availability}. Please wait for the model to download.`
+        );
       }
 
       let response = "";
@@ -354,16 +369,20 @@ export const PIPApp: React.FC<PIPAppProps> = ({
         const systemPrompt = `You are a helpful AI assistant. 
 
 IMPORTANT CAPABILITIES:
-${hasScreenAccess ? `
+${
+  hasScreenAccess
+    ? `
 ✓ SCREEN ACCESS IS ENABLED - I can automatically see your screen
 ✓ I have real-time access to screenshot images 
 ✓ When you mention "screen", "see", or ask visual questions, I can see your current display
 ✓ I do NOT need users to paste images - I capture them automatically
 ✓ I should respond naturally about what I observe on screen when asked
-` : `
+`
+    : `
 ✗ Screen access is disabled - I work in text-only mode
 ✗ To enable screen viewing, ask the user to click the screen button
-`}
+`
+}
 
 RESPONSE GUIDELINES:
 - Be conversational and brief unless detail is requested
@@ -430,23 +449,29 @@ RESPONSE GUIDELINES:
       } catch (multimodalError) {
         console.log(
           "Multimodal not available, falling back to text-only:",
-          multimodalError instanceof Error ? multimodalError.message : 'Unknown error'
+          multimodalError instanceof Error
+            ? multimodalError.message
+            : "Unknown error"
         );
 
         // Recreate session for text-only mode (different configuration)
         const textOnlySystemPrompt = `You are a helpful AI assistant. 
 
 IMPORTANT CAPABILITIES:
-${hasScreenAccess ? `
+${
+  hasScreenAccess
+    ? `
 ✓ SCREEN ACCESS IS ENABLED - I can see your screen via OCR text extraction
 ✓ I have real-time access to screen content as text
 ✓ When you mention "screen", "see", or ask visual questions, I can describe what I observe
 ✓ I do NOT need users to paste images - I extract text automatically
 ✓ I should respond naturally about what I observe on screen when asked
-` : `
+`
+    : `
 ✗ Screen access is disabled - I work in text-only mode
 ✗ To enable screen viewing, ask the user to click the screen button
-`}
+`
+}
 
 RESPONSE GUIDELINES:
 - Be conversational and brief unless detail is requested
@@ -457,7 +482,7 @@ RESPONSE GUIDELINES:
 
         // Use fallback context only when recreating session for compatibility
         const cleanContextFallback = buildCleanConversationContext();
-        const fallbackSystemPrompt = cleanContextFallback 
+        const fallbackSystemPrompt = cleanContextFallback
           ? `${textOnlySystemPrompt}\n\nCONVERSATION HISTORY:\n${cleanContextFallback}`
           : textOnlySystemPrompt;
 
@@ -524,25 +549,6 @@ RESPONSE GUIDELINES:
         />
 
         <div className="flex gap-2 p-2 bg-gray-700 border-t border-gray-600">
-          <button
-            onClick={onClose}
-            className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white border-none rounded cursor-pointer text-sm"
-          >
-            📱 Return
-          </button>
-          {onScreenToggle && (
-            <button
-              onClick={handleScreenToggle}
-              className={`px-3 py-1.5 text-white border-none rounded cursor-pointer text-sm ${
-                hasScreenAccess
-                  ? "bg-green-600 hover:bg-green-700"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
-              type="button"
-            >
-              {hasScreenAccess ? "📸 Screen: ON" : "📸 Enable Screen"}
-            </button>
-          )}
           <button
             onClick={handleClearConversation}
             className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white border-none rounded cursor-pointer text-sm"
