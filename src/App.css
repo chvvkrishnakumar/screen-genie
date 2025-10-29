@@ -1,0 +1,308 @@
+/* Essential styles that complement Tailwind */
+
+/* Screen capture protection - like banking websites */
+.pip-app,
+body {
+  /* Allow text selection for copying messages */
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  
+  /* Prevent screen recording/capture */
+  -webkit-appearance: none;
+  
+  /* Banking-style protection */
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  
+  /* Additional protection layers */
+  filter: contrast(1.01);
+  will-change: transform;
+  transform: translateZ(0);
+  
+  /* Prevent screenshot tools */
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Special styling for PIP mode */
+body.pip-mode .app,
+.pip-app {
+  /* Enhanced protection for floating window */
+  position: fixed;
+  z-index: 999999;
+  pointer-events: auto;
+  
+  /* Make harder to capture */
+  backdrop-filter: blur(0.1px);
+  -webkit-backdrop-filter: blur(0.1px);
+}
+
+/* Markdown content styling */
+.markdown-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Custom scrollbar for markdown content */
+.markdown-content::-webkit-scrollbar {
+  height: 6px;
+}
+
+.markdown-content::-webkit-scrollbar-track {
+  background: #1f2937;
+  border-radius: 3px;
+}
+
+.markdown-content::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+
+.markdown-content::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin: 1rem 0 0.5rem 0;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.markdown-content h1 { font-size: 1.5rem; }
+.markdown-content h2 { font-size: 1.25rem; }
+.markdown-content h3 { font-size: 1.125rem; }
+
+.markdown-content p {
+  margin: 0.75rem 0;
+  line-height: 1.6;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+/* Inline code */
+.markdown-content code {
+  background: #374151;
+  color: #e5e7eb;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', monospace;
+  font-size: 0.875em;
+  border: 1px solid #4b5563;
+}
+
+/* Code blocks */
+.markdown-content pre {
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+  max-width: 100%;
+  
+  /* Ensure horizontal scrolling works */
+  white-space: pre;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+/* Custom scrollbar for code blocks */
+.markdown-content pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.markdown-content pre::-webkit-scrollbar-track {
+  background: #111827;
+  border-radius: 4px;
+  margin: 0 4px;
+}
+
+.markdown-content pre::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+  border: 1px solid #374151;
+}
+
+.markdown-content pre::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+.markdown-content pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #e5e7eb;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre;
+}
+
+/* Lists */
+.markdown-content ul,
+.markdown-content ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.markdown-content li {
+  margin: 0.25rem 0;
+  line-height: 1.5;
+}
+
+/* Tables */
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Table wrapper for horizontal scrolling */
+.markdown-content table {
+  display: table;
+  width: 100%;
+  min-width: 100%;
+}
+
+/* If table is too wide, it will be wrapped in a container */
+.markdown-content .table-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+  border-radius: 6px;
+  border: 1px solid #374151;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid #374151;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.markdown-content th {
+  background: #374151;
+  font-weight: 600;
+}
+
+/* Blockquotes */
+.markdown-content blockquote {
+  border-left: 4px solid #6366f1;
+  margin: 1rem 0;
+  padding: 0.5rem 0 0.5rem 1rem;
+  background: #1f2937;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Links */
+.markdown-content a {
+  color: #60a5fa;
+  text-decoration: underline;
+}
+
+.markdown-content a:hover {
+  color: #93c5fd;
+}
+
+/* Horizontal rules */
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid #374151;
+  margin: 1.5rem 0;
+}
+
+/* Message styling based on type */
+.message.user {
+  background: #1e3a8a;
+  border-left: 3px solid #3b82f6;
+}
+
+.message.assistant {
+  background: #166534;
+  border-left: 3px solid #22c55e;
+}
+
+.message.system {
+  background: #7c2d12;
+  border-left: 3px solid #f97316;
+  font-size: 0.875rem;
+}
+
+.message.error {
+  background: #7f1d1d;
+  border-left: 3px solid #ef4444;
+}
+
+.message.thinking {
+  background: #374151;
+  border-left: 3px solid #6b7280;
+}
+
+/* All messages */
+.message {
+  border-radius: 12px;
+  color: #ffffff;
+}
+
+/* Thinking dots animation */
+@keyframes thinking-pulse {
+  0%, 80%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.thinking-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background-color: #9ca3af;
+  border-radius: 50%;
+  margin: 0 1px;
+  animation: thinking-pulse 1.4s infinite ease-in-out;
+}
+
+.thinking-dot:nth-child(1) { animation-delay: 0s; }
+.thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+.thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* Main app container */
+.app {
+  width: 100%;
+  background: #f9fafb;
+  overflow: hidden;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .app {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  
+  input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+}

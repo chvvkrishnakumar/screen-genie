@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screen Genie</title>
+    
+    <!-- Screen capture protection headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:; media-src 'self' blob:; img-src 'self' data: blob:;">
+    <meta name="referrer" content="no-referrer">
+    <meta name="robots" content="noindex, nofollow, nosnippet, noarchive, noimageindex">
+    <meta name="screen-capture" content="disabled">
+    <meta name="screenshot-protection" content="enabled">
+    
+    <!-- Permissions policy to restrict screen capture -->
+    <meta http-equiv="Permissions-Policy" content="screen-wake-lock=(), display-capture=()">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
