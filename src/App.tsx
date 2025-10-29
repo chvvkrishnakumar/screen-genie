@@ -22,17 +22,18 @@ function App() {
   React.useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       // Only show warning if we're on the chat page (not home page)
-      if (window.location.pathname === '/chat') {
+      if (window.location.pathname === "/chat") {
         e.preventDefault();
-        e.returnValue = 'You will lose your conversation if you reload. Are you sure?';
+        e.returnValue =
+          "You will lose your conversation if you reload. Are you sure?";
         return e.returnValue;
       }
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
@@ -41,7 +42,8 @@ function App() {
       <ScreenProvider>
         <SharedChatProvider>
           <TTSProvider>
-            <Router>
+            {/* 👇 Add basename for GitHub Pages */}
+            <Router basename="/screen-genie">
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/chat" element={<ChatPage />} />
